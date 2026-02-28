@@ -1,0 +1,62 @@
+SafeInbox — MVP Requirements
+Overview
+A web app that simulates a DM inbox with AI-powered message filtering. Incoming messages from strangers are analyzed by the Gemini API before being shown to the user. Harmful messages are visually suppressed but never permanently deleted — the user always retains control.
+Core User Flow
+
+A "stranger" types a message and hits send
+Gemini analyzes the message (with full conversation history as context)
+If safe → message appears normally in the inbox
+If harmful → message is blurred/hidden with a warning banner. User sees "A message may have been filtered" with two action buttons: Reveal and Block Sender
+User can choose to Continue Contact (whitelists the sender for the session, subsequent messages still get analyzed but flagged differently) or Block (ends the thread)
+
+Tech Stack
+
+Frontend: React.js
+Backend: Python Flask, single file app.py
+AI: Gemini API (gemini-pro model) via google-generativeai Python package
+No database — all state lives in memory/session for the MVP
+
+Gemini Prompt Design
+Send the full conversation thread as context with every new message. System prompt should instruct Gemini to:
+
+Act as a message safety classifier
+Consider the full conversation history, not just the latest message
+Return a JSON object: { "risk_score": 0-10, "category": "safe|creepy|threatening|explicit|manipulative", "reason": "brief explanation" }
+Risk score ≥ 6 = filtered. Risk score < 6 = delivered normally
+Flag escalation: if earlier messages were safe but tone shifts, risk score should reflect the full thread context
+
+UI Components
+Left panel — "Stranger" view:
+
+Text input + Send button
+Labeled clearly as "Send as Stranger"
+
+Right panel — "Your Inbox":
+
+Chat thread showing message history
+Safe messages appear normally
+Harmful messages appear as a blurred/frosted block with a warning icon and the text: "This message was filtered. It may contain harmful content."
+Two buttons on filtered messages: Reveal Message (unblurs on click, user's choice) and Block Sender
+A subtle "Continue Contact" button also appears, which adds a visual "trusted" badge to the sender and notes in subsequent Gemini prompts that the user has opted into contact
+
+Analyzing state:
+
+Show a subtle "Analyzing..." spinner between send and delivery so the demo flow is visible
+
+Known Limitations to Acknowledge in UI
+
+Add a small footer or tooltip: "First-message filtering may miss slow-escalation patterns. Thread context is used to improve accuracy."
+If user has clicked "Continue Contact," show a persistent soft warning: "You've accepted contact from this sender. Messages are still being monitored."
+
+Session Behavior
+
+One active conversation thread per session
+No login, no persistence, no database
+Refresh resets everything
+
+Future Scope (do not implement, just note in README)
+
+Computer vision analysis for image attachments
+Multi-turn trust scoring across sessions
+Native mobile app with OS-level message interception
+Browser extension layer for real platforms (Instagram, Twitter DMs)
