@@ -17,7 +17,7 @@ app = FastAPI(title="SafeInbox API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://safe-inbox.railway.app/"],
+    allow_origins=["http://localhost:3000", "https://thriving-taiyaki-24fe22.netlify.app/"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
