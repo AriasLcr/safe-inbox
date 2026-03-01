@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import StrangerPanel from './components/StrangerPanel'
 import InboxPanel from './components/InboxPanel'
 
-const API = 'http://localhost:8000'
+const API = 'https://safe-inbox.railway.app'
 
 export default function App() {
   const [messages, setMessages] = useState([])
