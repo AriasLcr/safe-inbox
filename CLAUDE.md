@@ -9,7 +9,7 @@ SafeInbox is a web app simulating a DM inbox with AI-powered message filtering. 
 ## Planned Tech Stack
 
 - **Frontend**: React.js
-- **Backend**: Python Flask, single file (`app.py`)
+- **Backend**: Python FastAPI, single file (`app.py`)
 - **AI**: Gemini API (`gemini-pro` model) via `google-generativeai` Python package
 - **State**: In-memory only — no database, no persistence; refresh resets everything
 
