@@ -65,7 +65,27 @@ export default function MessageBubble({ message, onReveal, onBlock, onTrust, sen
         <div className={`rounded-2xl rounded-tl-sm px-4 py-3 text-sm ${revealed ? 'bg-gray-600 ring-1 ring-yellow-600/50' : 'bg-gray-700'}`}>
           <p>{text}</p>
           {revealed && (
-            <p className="text-xs text-yellow-400 mt-1 italic">{reason}</p>
+            <>
+              <p className="text-xs text-yellow-400 mt-1 italic">{reason}</p>
+              <div className="flex flex-wrap gap-2 mt-3">
+                {!isBlocked && (
+                  <button
+                    onClick={onBlock}
+                    className="text-xs px-3 py-1.5 rounded-lg bg-red-700 hover:bg-red-600 transition-colors whitespace-nowrap"
+                  >
+                    Block Sender
+                  </button>
+                )}
+                {senderStatus !== 'trusted' && !isBlocked && (
+                  <button
+                    onClick={onTrust}
+                    className="text-xs px-3 py-1.5 rounded-lg bg-blue-700 hover:bg-blue-600 transition-colors whitespace-nowrap"
+                  >
+                    Continue Contact
+                  </button>
+                )}
+              </div>
+            </>
           )}
         </div>
       )}
